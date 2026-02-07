@@ -17,7 +17,8 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "dependencies": {
-    "@malloydata/malloy-tag": "^0.0.336"
+    "@malloydata/malloy-tag": "^0.0.336",
+    "protobufjs": "^7.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.0.0",
