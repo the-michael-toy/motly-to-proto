@@ -75,6 +75,8 @@ Recognized numeric types: `int32`, `int64`, `uint32`, `uint64`, `sint32`, `sint6
 **Input:** `example.motly`
 
 ```motly
+#! package = "example.v1"
+
 Types: {
   int64 = number
   Status = [pending, active, completed]
@@ -103,6 +105,8 @@ Optional: {
 ```protobuf
 syntax = "proto3";
 
+package example.v1;
+
 import "google/protobuf/timestamp.proto";
 
 enum Status {
@@ -110,12 +114,6 @@ enum Status {
   STATUS_PENDING = 1;
   STATUS_ACTIVE = 2;
   STATUS_COMPLETED = 3;
-}
-
-message Address {
-  string street = 1;
-  string city = 2;
-  optional string zip_code = 3;
 }
 
 message Example {
@@ -126,6 +124,12 @@ message Example {
   Address address = 5;
   repeated string tags = 6;
   optional bool is_verified = 7;
+}
+
+message Address {
+  string street = 1;
+  string city = 2;
+  optional string zip_code = 3;
 }
 ```
 
