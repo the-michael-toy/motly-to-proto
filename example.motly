@@ -1,0 +1,40 @@
+#! package = "example.v1"
+# Example schema to demonstrate motly-to-proto
+
+Types: {
+  # Numeric type aliases - these become their protobuf equivalents
+  int64 = number
+  int32 = number
+
+  # Custom enum type
+  Status = [pending, active, completed, archived]
+
+  # Custom nested type
+  Address: {
+    Required: {
+      street = string
+      city = string
+      country = string
+    }
+    Optional: {
+      zipCode = string
+    }
+  }
+}
+
+Required: {
+  id = int64
+  name = string
+  email = string
+  createdAt = date
+  status = Status
+  address = Address
+}
+
+Optional: {
+  age = int32
+  score = number
+  tags = "string[]"
+  isVerified = boolean
+  metadata = any
+}

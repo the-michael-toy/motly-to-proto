@@ -1,0 +1,29 @@
+{
+  "name": "motly-to-proto",
+  "version": "1.0.0",
+  "description": "Convert MOTLY schema definitions to Protocol Buffers format",
+  "type": "module",
+  "license": "CC0-1.0",
+  "bin": {
+    "motly-to-proto": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "LICENSE.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "dependencies": {
+    "@malloydata/malloy-tag": "^0.0.336"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.0.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.0.0"
+  }
+}
