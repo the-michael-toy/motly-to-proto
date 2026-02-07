@@ -1,6 +1,6 @@
 # motly-to-proto
 
-Convert MOTLY schema definitions to Protocol Buffer (proto3) format.
+Convert [MOTLY](https://github.com/malloydata/malloy/blob/main/packages/malloy-tag/docs/motly.md) schema definitions to Protocol Buffer (proto3) format.
 
 > **Note:** This is a proof of concept demonstrating the feasibility of the conversion. It has not yet been used in production.
 
