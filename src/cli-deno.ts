@@ -1,11 +1,19 @@
 import { motlySchemaToProto } from "./motly-to-proto.ts";
 
+function getUsageLine(): string {
+  if (Deno.build.standalone) {
+    const execName = Deno.execPath().split("/").pop() || "motly-to-proto";
+    return `Usage: ${execName} <schema.motly> [MessageName] [options]`;
+  }
+  return "Usage: deno run --allow-read cli-deno.ts <schema.motly> [MessageName] [options]";
+}
+
 function main() {
   const args = Deno.args;
   const { positional, options } = parseArgs(args);
 
   if (positional.length < 1 || options.help) {
-    console.error("Usage: deno run --allow-read cli-deno.ts <schema.motly> [MessageName] [options]");
+    console.error(getUsageLine());
     console.error("");
     console.error("Converts a MOTLY schema file to Protocol Buffers format.");
     console.error("");
