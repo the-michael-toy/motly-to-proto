@@ -2,6 +2,8 @@
 
 Convert MOTLY schema definitions to Protocol Buffer (proto3) format.
 
+> **Note:** This is a quick hack / proof of concept and has never been used in production.
+
 ## Installation
 
 ```bash
