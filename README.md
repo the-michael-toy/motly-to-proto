@@ -4,24 +4,13 @@ Convert [MOTLY](https://github.com/malloydata/malloy/blob/main/packages/malloy-t
 
 > **Note:** This is a proof of concept demonstrating the feasibility of the conversion. It has not yet been used in production.
 
-## Installation
+## Usage
 
 ### Node.js
 
 ```bash
 npm install
 npm run build
-```
-
-### Deno
-
-No installation needed - runs directly from source.
-
-## Usage
-
-### Node.js
-
-```bash
 node dist/cli.js <schema.motly> [MessageName] [--package <name>]
 ```
 
@@ -30,8 +19,6 @@ node dist/cli.js <schema.motly> [MessageName] [--package <name>]
 ```bash
 deno run --allow-read src/cli-deno.ts <schema.motly> [MessageName] [--package <name>]
 ```
-
-If no message name is provided, it's derived from the filename.
 
 ### Directives
 
