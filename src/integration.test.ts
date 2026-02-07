@@ -1,8 +1,10 @@
+import { describe, it } from "node:test";
+import assert from "node:assert";
 import protobuf from "protobufjs";
 import { motlySchemaToProto } from "./motly-to-proto.js";
 
 describe("integration: roundtrip through protobuf", () => {
-  it("creates, writes, reads, and verifies a message using all features", async () => {
+  it("creates, writes, reads, and verifies a message using all features", () => {
     // Schema testing core features:
     // - Required and Optional fields
     // - Scalar types: string, number, boolean
@@ -62,9 +64,9 @@ describe("integration: roundtrip through protobuf", () => {
       "",
       "Optional: {",
       "  nickname = string",
-      "  scores = \"number[]\"",
-      "  tags = \"Tag[]\"",
-      "  aliases = \"string[]\"",
+      '  scores = "number[]"',
+      '  tags = "Tag[]"',
+      '  aliases = "string[]"',
       "}",
     ].join("\n");
 
@@ -116,7 +118,7 @@ describe("integration: roundtrip through protobuf", () => {
 
     // Verify the message is valid
     const errMsg = TestMessage.verify(testData);
-    expect(errMsg).toBeNull();
+    assert.strictEqual(errMsg, null);
 
     // Create, encode, decode
     const message = TestMessage.create(testData);
@@ -126,28 +128,39 @@ describe("integration: roundtrip through protobuf", () => {
       longs: Number,
       enums: Number,
       defaults: true,
-    });
+    }) as Record<string, unknown>;
 
     // Verify all fields roundtrip correctly
-    expect(decodedObj.id).toBe(testData.id);
-    expect(decodedObj.name).toBe(testData.name);
-    expect(decodedObj.count).toBe(testData.count);
-    expect(decodedObj.price).toBeCloseTo(testData.price, 2);
-    expect(decodedObj.ratio).toBeCloseTo(testData.ratio, 5);
-    expect(decodedObj.active).toBe(testData.active);
-    expect(decodedObj.status).toBe(testData.status);
-    expect(decodedObj.address.street).toBe(testData.address.street);
-    expect(decodedObj.address.city).toBe(testData.address.city);
-    expect(decodedObj.address.zipCode).toBe(testData.address.zipCode);
-    expect(decodedObj.priority).toBe(testData.priority);
-    expect(decodedObj.inlineNested.field1).toBe(testData.inlineNested.field1);
-    expect(decodedObj.inlineNested.field2).toBeCloseTo(testData.inlineNested.field2, 1);
-    expect(decodedObj.nickname).toBe(testData.nickname);
-    expect(decodedObj.scores).toHaveLength(3);
-    expect(decodedObj.scores[0]).toBeCloseTo(95.5, 1);
-    expect(decodedObj.tags).toHaveLength(2);
-    expect(decodedObj.tags[0].key).toBe("env");
-    expect(decodedObj.tags[1].value).toBe("backend");
-    expect(decodedObj.aliases).toEqual(["alias1", "alias2", "alias3"]);
+    assert.strictEqual(decodedObj.id, testData.id);
+    assert.strictEqual(decodedObj.name, testData.name);
+    assert.strictEqual(decodedObj.count, testData.count);
+    assert(Math.abs((decodedObj.price as number) - testData.price) < 0.01);
+    assert(Math.abs((decodedObj.ratio as number) - testData.ratio) < 0.00001);
+    assert.strictEqual(decodedObj.active, testData.active);
+    assert.strictEqual(decodedObj.status, testData.status);
+
+    const address = decodedObj.address as Record<string, unknown>;
+    assert.strictEqual(address.street, testData.address.street);
+    assert.strictEqual(address.city, testData.address.city);
+    assert.strictEqual(address.zipCode, testData.address.zipCode);
+
+    assert.strictEqual(decodedObj.priority, testData.priority);
+
+    const inlineNested = decodedObj.inlineNested as Record<string, unknown>;
+    assert.strictEqual(inlineNested.field1, testData.inlineNested.field1);
+    assert(Math.abs((inlineNested.field2 as number) - testData.inlineNested.field2) < 0.1);
+
+    assert.strictEqual(decodedObj.nickname, testData.nickname);
+
+    const scores = decodedObj.scores as number[];
+    assert.strictEqual(scores.length, 3);
+    assert(Math.abs(scores[0] - 95.5) < 0.1);
+
+    const tags = decodedObj.tags as Array<Record<string, unknown>>;
+    assert.strictEqual(tags.length, 2);
+    assert.strictEqual(tags[0].key, "env");
+    assert.strictEqual(tags[1].value, "backend");
+
+    assert.deepStrictEqual(decodedObj.aliases, ["alias1", "alias2", "alias3"]);
   });
 });

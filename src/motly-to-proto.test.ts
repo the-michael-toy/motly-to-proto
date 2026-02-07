@@ -1,3 +1,5 @@
+import { describe, it } from "node:test";
+import assert from "node:assert";
 import { motlySchemaToProto } from "./motly-to-proto.js";
 
 describe("motlySchemaToProto", () => {
@@ -11,11 +13,11 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "Basic");
 
-    expect(proto).toContain('syntax = "proto3";');
-    expect(proto).toContain("message Basic {");
-    expect(proto).toContain("string name = 1;");
-    expect(proto).toContain("double count = 2;");
-    expect(proto).toContain("bool active = 3;");
+    assert(proto.includes('syntax = "proto3";'));
+    assert(proto.includes("message Basic {"));
+    assert(proto.includes("string name = 1;"));
+    assert(proto.includes("double count = 2;"));
+    assert(proto.includes("bool active = 3;"));
   });
 
   it("converts date to Timestamp", () => {
@@ -26,8 +28,8 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithDate");
 
-    expect(proto).toContain('import "google/protobuf/timestamp.proto";');
-    expect(proto).toContain("google.protobuf.Timestamp created_at = 1;");
+    assert(proto.includes('import "google/protobuf/timestamp.proto";'));
+    assert(proto.includes("google.protobuf.Timestamp created_at = 1;"));
   });
 
   it("converts optional fields", () => {
@@ -39,8 +41,8 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithOptional");
 
-    expect(proto).toContain("optional string nickname = 1;");
-    expect(proto).toContain("optional double age = 2;");
+    assert(proto.includes("optional string nickname = 1;"));
+    assert(proto.includes("optional double age = 2;"));
   });
 
   it("converts array types to repeated", () => {
@@ -52,8 +54,8 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithArrays");
 
-    expect(proto).toContain("repeated string tags = 1;");
-    expect(proto).toContain("repeated double scores = 2;");
+    assert(proto.includes("repeated string tags = 1;"));
+    assert(proto.includes("repeated double scores = 2;"));
   });
 
   it("converts enum types", () => {
@@ -67,12 +69,12 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithEnum");
 
-    expect(proto).toContain("enum Status {");
-    expect(proto).toContain("STATUS_UNSPECIFIED = 0;");
-    expect(proto).toContain("STATUS_PENDING = 1;");
-    expect(proto).toContain("STATUS_ACTIVE = 2;");
-    expect(proto).toContain("STATUS_COMPLETED = 3;");
-    expect(proto).toContain("Status status = 1;");
+    assert(proto.includes("enum Status {"));
+    assert(proto.includes("STATUS_UNSPECIFIED = 0;"));
+    assert(proto.includes("STATUS_PENDING = 1;"));
+    assert(proto.includes("STATUS_ACTIVE = 2;"));
+    assert(proto.includes("STATUS_COMPLETED = 3;"));
+    assert(proto.includes("Status status = 1;"));
   });
 
   it("converts nested types to messages", () => {
@@ -91,10 +93,10 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithNested");
 
-    expect(proto).toContain("message Address {");
-    expect(proto).toContain("string street = 1;");
-    expect(proto).toContain("string city = 2;");
-    expect(proto).toContain("Address address = 1;");
+    assert(proto.includes("message Address {"));
+    assert(proto.includes("string street = 1;"));
+    assert(proto.includes("string city = 2;"));
+    assert(proto.includes("Address address = 1;"));
   });
 
   it("uses numeric type aliases", () => {
@@ -113,10 +115,10 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithNumericTypes");
 
-    expect(proto).toContain("int64 id = 1;");
-    expect(proto).toContain("int32 count = 2;");
-    expect(proto).toContain("float price = 3;");
-    expect(proto).toContain("double ratio = 4;");
+    assert(proto.includes("int64 id = 1;"));
+    assert(proto.includes("int32 count = 2;"));
+    assert(proto.includes("float price = 3;"));
+    assert(proto.includes("double ratio = 4;"));
   });
 
   it("converts any type to Value", () => {
@@ -127,8 +129,8 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithAny");
 
-    expect(proto).toContain('import "google/protobuf/struct.proto";');
-    expect(proto).toContain("google.protobuf.Value metadata = 1;");
+    assert(proto.includes('import "google/protobuf/struct.proto";'));
+    assert(proto.includes("google.protobuf.Value metadata = 1;"));
   });
 
   it("converts camelCase to snake_case", () => {
@@ -141,9 +143,9 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithCamelCase");
 
-    expect(proto).toContain("string first_name = 1;");
-    expect(proto).toContain("string last_name = 2;");
-    expect(proto).toContain("google.protobuf.Timestamp created_at = 3;");
+    assert(proto.includes("string first_name = 1;"));
+    assert(proto.includes("string last_name = 2;"));
+    assert(proto.includes("google.protobuf.Timestamp created_at = 3;"));
   });
 
   it("handles inline nested objects", () => {
@@ -159,10 +161,10 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithInlineNested");
 
-    expect(proto).toContain("message WithInlineNestedConfig {");
-    expect(proto).toContain("string host = 1;");
-    expect(proto).toContain("double port = 2;");
-    expect(proto).toContain("WithInlineNestedConfig config = 1;");
+    assert(proto.includes("message WithInlineNestedConfig {"));
+    assert(proto.includes("string host = 1;"));
+    assert(proto.includes("double port = 2;"));
+    assert(proto.includes("WithInlineNestedConfig config = 1;"));
   });
 
   it("handles arrays of custom types", () => {
@@ -181,8 +183,8 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "WithCustomArray");
 
-    expect(proto).toContain("message Item {");
-    expect(proto).toContain("repeated Item items = 1;");
+    assert(proto.includes("message Item {"));
+    assert(proto.includes("repeated Item items = 1;"));
   });
 
   it("handles XMLParser style names (consecutive capitals)", () => {
@@ -194,8 +196,8 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "Test");
 
-    expect(proto).toContain("string xml_parser = 1;");
-    expect(proto).toContain("string http_url = 2;");
+    assert(proto.includes("string xml_parser = 1;"));
+    assert(proto.includes("string http_url = 2;"));
   });
 
   it("handles hyphenated field names", () => {
@@ -207,8 +209,8 @@ describe("motlySchemaToProto", () => {
     ].join("\n");
     const proto = motlySchemaToProto(schema, "Test");
 
-    expect(proto).toContain("string my_field = 1;");
-    expect(proto).toContain("double another_long_name = 2;");
+    assert(proto.includes("string my_field = 1;"));
+    assert(proto.includes("double another_long_name = 2;"));
   });
 
   it("sanitizes enum values with special characters", () => {
@@ -222,9 +224,9 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "Test");
 
-    expect(proto).toContain("STATUS_IN_PROGRESS = 1;");
-    expect(proto).toContain("STATUS_NOT_STARTED = 2;");
-    expect(proto).toContain("STATUS_ON_HOLD = 3;");
+    assert(proto.includes("STATUS_IN_PROGRESS = 1;"));
+    assert(proto.includes("STATUS_NOT_STARTED = 2;"));
+    assert(proto.includes("STATUS_ON_HOLD = 3;"));
   });
 
   it("supports package name option", () => {
@@ -235,7 +237,7 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "Test", { packageName: "myapp.v1" });
 
-    expect(proto).toContain("package myapp.v1;");
+    assert(proto.includes("package myapp.v1;"));
   });
 
   it("parses package from #! directive", () => {
@@ -246,7 +248,7 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "Test");
 
-    expect(proto).toContain("package myapp.v1;");
+    assert(proto.includes("package myapp.v1;"));
   });
 
   it("command line option overrides directive", () => {
@@ -257,8 +259,8 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "Test", { packageName: "cmdline.v1" });
 
-    expect(proto).toContain("package cmdline.v1;");
-    expect(proto).not.toContain("directive.v1");
+    assert(proto.includes("package cmdline.v1;"));
+    assert(!proto.includes("directive.v1"));
   });
 
   it("handles multiple directive lines", () => {
@@ -270,7 +272,7 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "Test");
 
-    expect(proto).toContain("package multi.v1;");
+    assert(proto.includes("package multi.v1;"));
   });
 
   it("handles union types as Value", () => {
@@ -286,7 +288,7 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "Test");
 
-    expect(proto).toContain("google.protobuf.Value value = 1;");
+    assert(proto.includes("google.protobuf.Value value = 1;"));
   });
 
   it("namespaces inline enums by parent message", () => {
@@ -297,8 +299,8 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "User");
 
-    expect(proto).toContain("enum UserStatus {");
-    expect(proto).toContain("UserStatus status = 1;");
+    assert(proto.includes("enum UserStatus {"));
+    assert(proto.includes("UserStatus status = 1;"));
   });
 
   it("does not generate duplicate messages for repeated type references", () => {
@@ -316,8 +318,7 @@ describe("motlySchemaToProto", () => {
     `;
     const proto = motlySchemaToProto(schema, "Test");
 
-    // Should only have one "message Tag" definition
     const matches = proto.match(/message Tag \{/g);
-    expect(matches).toHaveLength(1);
+    assert.strictEqual(matches?.length, 1);
   });
 });

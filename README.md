@@ -6,15 +6,29 @@ Convert [MOTLY](https://github.com/malloydata/malloy/blob/main/packages/malloy-t
 
 ## Installation
 
+### Node.js
+
 ```bash
 npm install
 npm run build
 ```
 
+### Deno
+
+No installation needed - runs directly from source.
+
 ## Usage
+
+### Node.js
 
 ```bash
 node dist/cli.js <schema.motly> [MessageName] [--package <name>]
+```
+
+### Deno
+
+```bash
+deno run --allow-read src/cli-deno.ts <schema.motly> [MessageName] [--package <name>]
 ```
 
 If no message name is provided, it's derived from the filename.

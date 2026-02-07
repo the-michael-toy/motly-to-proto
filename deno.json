@@ -1,0 +1,10 @@
+{
+  "imports": {
+    "@malloydata/malloy-tag": "npm:@malloydata/malloy-tag@^0.0.336",
+    "protobufjs": "npm:protobufjs@^7.0.0"
+  },
+  "tasks": {
+    "run": "deno run --allow-read src/cli-deno.ts",
+    "test": "deno test --allow-read src/"
+  }
+}
